@@ -5,7 +5,7 @@ export default function App() {
 
   return (
     <>
-      <h1>hi hello</h1>
+      <h1 className="text-4xl">hi hello</h1>
       <button onClick={() => setCount((p) => p + 1)}>{count}</button>
     </>
   );
