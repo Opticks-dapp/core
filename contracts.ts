@@ -1,4 +1,5 @@
 import axios from "axios";
+import { apiKey } from "./config";
 
 export async function fetchTransactions(
     address: string,
@@ -15,11 +16,3 @@ export async function fetchTransactions(
     }
 }
 
-(async () => {
-    const transactions = await fetchTransactions(
-        "0x472cAde746560419a407CA7103c87c79c794C418",
-        100,
-        "key",
-    );
-    console.log(transactions.length);
-})();
