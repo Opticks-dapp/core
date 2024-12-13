@@ -2,32 +2,26 @@ import { ethers } from "ethers";
 import { createZGServingNetworkBroker } from "@0glabs/0g-serving-broker";
 import OpenAI from "openai";
 
-async function main() {
+export async function getResponse(content: string) {
+    if (!process.env.pvtKey) throw new Error("pvtKey is required");
+
     const provider = new ethers.JsonRpcProvider("https://evmrpc-testnet.0g.ai");
 
-    const privateKey =
-        "0x6537fbf4c6e25462e7229efec0b6758a0be7a85b04c7362ec289d7dbd89201a6";
+    const privateKey = process.env.pvtKey;
     const wallet = new ethers.Wallet(privateKey, provider);
 
     try {
         const broker = await createZGServingNetworkBroker(wallet);
 
         const services = await broker.listService();
-        console.log(services)
-        const service : any = services.find(
-            (s:any) => s.name === "chat-provider-1",
+        const service: any = services.find(
+            (s: any) => s.name === "chat-provider-1",
         );
         const providerAddress = service.provider;
 
-        const initialBalance = 0.00000002;
-        // await broker.addAccount(providerAddress, initialBalance);
-        console.log("first");
-
         const account = await broker.getAccount(providerAddress);
-        console.log(account);
 
         const serviceName = service.name;
-        const content = "Hi, choose a word randomly, only respond in one word : memecoin, swap, defi, lending, game";
 
         const { endpoint, model } = await broker.getServiceMetadata(
             providerAddress,
@@ -39,6 +33,13 @@ async function main() {
             serviceName,
             content,
         );
+
+        // await broker.settleFee(
+        //     providerAddress,
+        //     serviceName,
+        //     0.000000000018000000000000001288
+        // );
+        // return;
 
         const openai = new OpenAI({
             baseURL: endpoint,
@@ -57,24 +58,22 @@ async function main() {
         );
 
         const receivedContent = completion.choices[0].message.content;
-        const chatID = completion.id;
-        console.log(receivedContent);
-        console.log("Response:", receivedContent);
 
         if (!receivedContent) {
-            throw new Error("No response from")
+            throw new Error("No response from");
         }
 
-        const isValid = await broker.processResponse(
+        const chatID = completion.id;
+
+        await broker.processResponse(
             providerAddress,
             serviceName,
-            receivedContent,
+            content,
             chatID,
         );
-        console.log(isValid);
+
+        return receivedContent;
     } catch (error) {
         console.error("Error during execution:", error);
     }
 }
-
-main();

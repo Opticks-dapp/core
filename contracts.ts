@@ -1,7 +1,6 @@
 import axios from "axios";
 import { apiKey } from "./config";
 
-// Fetch transactions for a given address
 export async function fetchTransactions(
     address: string,
     n: number,
@@ -17,7 +16,6 @@ export async function fetchTransactions(
     }
 }
 
-// Delay function
 function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -40,7 +38,7 @@ async function buildGraph(
 
     try {
         // Delay before making the API call
-        await sleep(175); // 0.5-second delay
+        await sleep(175); // delay
 
         const transactions = await fetchTransactions(address, width, apiKey);
 

@@ -1,23 +1,22 @@
 {
-  "name": "pr",
+  "name": "server",
   "version": "1.0.0",
   "main": "index.js",
-  "private": true,
   "license": "MIT",
   "scripts": {
-    "client:dev" : "cd client && yarn dev", 
-    "server:dev" : "cd server && yarn dev"
+    "dev": "nodemon app.ts"
   },
   "dependencies": {
     "@0glabs/0g-serving-broker": "^0.1.0",
+    "@types/cors": "^2.8.17",
     "@types/crypto-js": "4.2.2",
+    "@types/express": "^5.0.0",
+    "add": "^2.0.6",
+    "cors": "^2.8.5",
     "crypto-js": "4.2.0",
     "dotenv": "^16.4.7",
     "ethers": "^6.13.4",
-    "graphology": "^0.25.4",
-    "openai": "^4.76.2",
-    "sigma": "^3.0.0",
-    "viem": "^2.21.55"
-  },
-  "workspaces": ["client"]
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
 }
