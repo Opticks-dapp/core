@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import Icon from "../components/Icon";
 import { twMerge } from "tailwind-merge";
 
+import Editor from "@monaco-editor/react";
+
 export default function () {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
@@ -67,7 +69,9 @@ export default function () {
           <div
             className={twMerge(
               "flex items-center gap-x-2 border px-2 py-1 rounded-full border-black font-medium cursor-pointer",
-              key === selectedTool ? "bg-gray-500 font-normal text-white" : "hover:bg-slate-200"
+              key === selectedTool
+                ? "bg-gray-500 font-normal text-white"
+                : "hover:bg-slate-200"
             )}
             key={key}
             onClick={() => setSelectedTool(key)}
@@ -78,12 +82,20 @@ export default function () {
         ))}
       </div>
 
-      <textarea
+      {/* <textarea
         ref={textareaRef}
         name="contract"
         className="bg-blue-100 outline-none p-2 rounded-lg w-full h-[70vh] resize-none"
         placeholder="Input your contract code here..."
-      ></textarea>
+      ></textarea> */}
+
+      <Editor
+        className="w-full p-2 h-[70vh] border border-black/10 rounded"
+        defaultLanguage="sol"
+        defaultValue="// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+"
+      />
 
       <button
         className="bg-teal-500 mt-5 mx-auto flex items-center gap-x-1 text-white rounded-md px-4 py-2 font-medium"

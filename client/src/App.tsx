@@ -1,10 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from "./components/Icon";
 import Outlet from "./Outlet";
 import { twMerge } from "tailwind-merge";
+import { useMonaco } from "@monaco-editor/react";
 
 export default function App() {
   const [view, setView] = useState(0);
+
+  const monaco = useMonaco();
+
+  useEffect(() => {
+    if (monaco) {
+      monaco.editor.defineTheme("one-dark", {
+        base: "vs-dark",
+        inherit: true,
+        rules: [
+          {
+            token: "comment",
+            foreground: "#338332",
+            fontStyle: "italic",
+          },
+          {
+            token: "bracket",
+            foreground: "#0000ff",
+          },
+        ],
+        colors: {
+          "editor.background": "#000000",
+        },
+      });
+    }
+  }, [monaco]);
 
   return (
     <>
