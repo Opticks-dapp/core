@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Icon from "../components/Icon";
 import { twMerge } from "tailwind-merge";
 
 import Editor from "@monaco-editor/react";
 
-const defaultSuffix = ""
+const defaultSuffix = "";
 
 export default function () {
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,13 @@ export default function () {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ content:tools[selectedTool].prefix + contract + tools[selectedTool].suffix + defaultSuffix }), 
+      body: JSON.stringify({
+        content:
+          tools[selectedTool].prefix +
+          contract +
+          tools[selectedTool].suffix +
+          defaultSuffix,
+      }),
     })
       .then((res) =>
         res.json().then((data) => {
