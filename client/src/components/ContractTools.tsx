@@ -4,23 +4,24 @@ import { twMerge } from "tailwind-merge";
 
 import Editor from "@monaco-editor/react";
 
+const defaultSuffix = ""
+
 export default function () {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
+  const [contract, setContract] = useState("");
 
   const [selectedTool, setSelectedTool] = useState(0);
 
-  const textareaRef = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
-
   function generateResponse() {
-    if (!textareaRef.current) return;
+    if (!contract) return;
     setLoading(true);
     fetch("http://127.0.0.1:9090/response", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ content: textareaRef.current.value }),
+      body: JSON.stringify({ content:tools[selectedTool].prefix + contract + tools[selectedTool].suffix + defaultSuffix }), 
     })
       .then((res) =>
         res.json().then((data) => {
@@ -38,7 +39,7 @@ export default function () {
   return (
     <div className="p-10 relative">
       {loading && (
-        <div className="absolute inset-0 backdrop-blur-sm flex items-center justify-center drop-shadow-lg">
+        <div className="absolute inset-0 backdrop-blur-sm flex items-center justify-center drop-shadow-lg z-50">
           <img
             src="https://www.atera.com/app/themes/atera/dist/images/magic_animation.gif"
             alt="loading"
@@ -50,7 +51,7 @@ export default function () {
       )}
 
       {response && (
-        <div className="absolute inset-0 flex flex-col items-center bg-white p-8 gap-y-5">
+        <div className="absolute z-50 inset-0 flex flex-col items-center bg-white p-8 gap-y-5">
           <p>{response}</p>
           <button
             className="text-white bg-teal-600 px-3 py-1 rounded flex gap-x-1 items-center"
@@ -90,7 +91,8 @@ export default function () {
       ></textarea> */}
 
       <Editor
-        className="w-full p-2 h-[70vh] border border-black/10 rounded"
+        onChange={(value) => setContract(value || "")}
+        className="w-full p-2 h-[70vh] border border-black/10 rounded z-10"
         defaultLanguage="sol"
         defaultValue="// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;

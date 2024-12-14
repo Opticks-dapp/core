@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function () {
-  const [dot, setDot] = useState("");
+  // const [dot, setDot] = useState("");
   const graph: Record<string, string[]> = {};
   const visitedAddresses = new Set<string>();
 
@@ -29,7 +29,7 @@ export default function () {
       // Delay before making the API call
       await sleep(200); // delay
       console.log("behaj");
-      setDot(printGraph(graph));
+      printGraph(graph);
 
       const transactions = await fetchTransactions(address, width);
 
