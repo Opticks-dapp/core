@@ -25,7 +25,7 @@ async function main() {
 
     // Step 3.1: Select a service
     const service = services.find(
-      (service: any) => service.name === "llama8Bb"
+      (service: any) => service.name === "chat-provider-2"
     );
     if (!service) {
       console.error("Service not found.");
@@ -34,17 +34,17 @@ async function main() {
     const providerAddress = service.provider;
 
     // Step 4: Manage Accounts
-    const initialBalance = 0.00000001;
+    const initialBalance = 0.00500001;
     // Step 4.1: Create a new account
     console.log("Creating a new account...");
     await broker.addAccount(providerAddress, initialBalance);
     console.log("Account created successfully.");
 
     // Step 4.2: Deposit funds into the account
-    const depositAmount = 0.00000002;
-    console.log("Depositing funds...");
-    await broker.depositFund(providerAddress, depositAmount);
-    console.log("Funds deposited successfully.");
+    // const depositAmount = 0.00000002;
+    // console.log("Depositing funds...");
+    // await broker.depositFund(providerAddress, depositAmount);
+    // console.log("Funds deposited successfully.");
 
     // Step 4.3: Get the account
     const account = await broker.getAccount(providerAddress);

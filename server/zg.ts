@@ -37,7 +37,7 @@ export async function getResponse(content: string) {
         // await broker.settleFee(
         //     providerAddress,
         //     serviceName,
-        //     0.000000000018000000000000001288
+        //     0.000000000050000000000000003577
         // );
         // return;
 
@@ -56,6 +56,8 @@ export async function getResponse(content: string) {
                 },
             },
         );
+
+        console.log(completion)
 
         const receivedContent = completion.choices[0].message.content;
 

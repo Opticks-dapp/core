@@ -1,9 +1,12 @@
 import { useRef, useState } from "react";
 import Icon from "../components/Icon";
+import { twMerge } from "tailwind-merge";
 
 export default function () {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
+
+  const [selectedTool, setSelectedTool] = useState(0);
 
   const textareaRef = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
 
@@ -17,11 +20,12 @@ export default function () {
       },
       body: JSON.stringify({ content: textareaRef.current.value }),
     })
-      .then((res) => res.json()
-      .then((data) => {
-        setResponse(data.response);
-        setLoading(false);
-      }))
+      .then((res) =>
+        res.json().then((data) => {
+          setResponse(data.response);
+          setLoading(false);
+        })
+      )
       .catch((err) => {
         console.error(err);
         alert("Error");
@@ -44,9 +48,15 @@ export default function () {
       )}
 
       {response && (
-        <div className="absolute inset-0 flex flex-col items-center bg-white">
+        <div className="absolute inset-0 flex flex-col items-center bg-white p-8 gap-y-5">
           <p>{response}</p>
-          <button className="text-white bg-teal-600"> 
+          <button
+            className="text-white bg-teal-600 px-3 py-1 rounded flex gap-x-1 items-center"
+            onClick={() => {
+              setResponse("");
+            }}
+          >
+            <Icon.ArrowLeft size={18} />
             Ok, go back
           </button>
         </div>
@@ -55,10 +65,14 @@ export default function () {
       <div className="flex gap-x-3 mb-8">
         {tools.map((tool, key) => (
           <div
-            className="flex items-center gap-x-2 border px-2 py-1 rounded-full border-black font-medium cursor-pointer"
+            className={twMerge(
+              "flex items-center gap-x-2 border px-2 py-1 rounded-full border-black font-medium cursor-pointer",
+              key === selectedTool ? "bg-gray-500 font-normal text-white" : "hover:bg-slate-200"
+            )}
             key={key}
+            onClick={() => setSelectedTool(key)}
           >
-            <tool.icon size={14} />
+            <tool.icon size={14} strokeWidth={2} />
             <span className="text-xs">{tool.name}</span>
           </div>
         ))}
@@ -68,6 +82,7 @@ export default function () {
         ref={textareaRef}
         name="contract"
         className="bg-blue-100 outline-none p-2 rounded-lg w-full h-[70vh] resize-none"
+        placeholder="Input your contract code here..."
       ></textarea>
 
       <button
@@ -111,5 +126,17 @@ const tools = [
     prefix: "",
     suffix: "",
     icon: Icon.Bug,
+  },
+  {
+    name: "Write Tests",
+    prefix: "",
+    suffix: "",
+    icon: Icon.TestTubeDiagonal,
+  },
+  {
+    name: "Code Generation",
+    prefix: "",
+    suffix: "",
+    icon: Icon.Stars,
   },
 ];
